@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- LOGO AREA -->
-<img src="./Lemma-logo.jpeg" alt="Lemma Logo" width="180" />
+<img src="./Lemma-logo.png" alt="Lemma Logo" width="180" />
 
 ### Lemma
 <strong>Step through your code like a movie — a time-travel debugger that lives in a link.</strong>
