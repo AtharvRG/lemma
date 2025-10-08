@@ -3,31 +3,124 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --tuna: #32303f;
+  --aquamarine: #88f9b5;
+  --rhino: #2C3859;
+  --dandelion: #FDD158;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-tuna text-gray-200;
+  color-scheme: dark;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.hero-gradient {
+  background-color: var(--rhino);
+  background-image: radial-gradient(
+    at 52% 100%, 
+    var(--dandelion) 0px, 
+    transparent 50%
+  ),
+  radial-gradient(
+    at 0% 0%, 
+    var(--dandelion) 0px, 
+    transparent 50%
+  );
+}
+
+/* Hero / sunset sky */
+.hero-viewport {
+  background: linear-gradient(to bottom, #04103a 0%, #08305a 25%, #2b5b8a 45%, #f0a93a 75%, #ffd27a 100%);
+}
+
+.hero-sky {
+  background: linear-gradient(to bottom, rgba(6,15,40,1) 0%, rgba(12,35,72,1) 30%, rgba(246,160,44,0.9) 70%, rgba(255,214,122,1) 100%);
+  filter: saturate(1.05);
+}
+
+/* Stars */
+.stars-layer svg { mix-blend-mode: screen; }
+.stars { opacity: 0.9; }
+.stars circle { animation: twinkle 6s ease-in-out infinite; transform-origin: center; }
+.stars circle:nth-child(1) { animation-delay: 0s; }
+.stars circle:nth-child(2) { animation-delay: 0.8s; }
+.stars circle:nth-child(3) { animation-delay: 1.4s; }
+.stars circle:nth-child(4) { animation-delay: 2.1s; }
+.stars circle:nth-child(5) { animation-delay: 2.8s; }
+.stars circle:nth-child(6) { animation-delay: 3.3s; }
+.stars circle:nth-child(7) { animation-delay: 4.1s; }
+.stars circle:nth-child(8) { animation-delay: 4.6s; }
+.stars circle:nth-child(9) { animation-delay: 5.2s; }
+.stars circle:nth-child(10) { animation-delay: 5.8s; }
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.9; r: 0.4; }
+  50% { opacity: 0.2; r: 0.15; }
+}
+
+/* Sun */
+.sun-wrap { width: 180px; height: 180px; }
+.sun { width: 180px; height: 180px; border-radius: 9999px; background: radial-gradient(circle at 35% 30%, #fff6c8 0%, #ffd86b 25%, #ffb84d 55%, rgba(255,160,40,0.9) 100%); box-shadow: 0 30px 60px rgba(255,150,40,0.18); }
+
+/* Beach foreground */
+.beach-foreground { height: 160px; background: linear-gradient(180deg, rgba(255,230,190,0) 0%, rgba(255,230,190,1) 100%); box-shadow: inset 0 8px 30px rgba(0,0,0,0.12); }
+
+/* Clouds */
+.clouds-layer { overflow: visible; }
+.cloud { position: absolute; top: 8%; left: -20%; width: 60vw; height: 18vh; opacity: 0.95; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08)); }
+.cloud svg, .cloud g { filter: blur(6px); }
+.cloud-1 { transform: translateX(-10%); animation: cloud-move-1 40s linear infinite; width: 60vw; height: 18vh; }
+.cloud-2 { top: 18%; left: -40%; width: 80vw; height: 20vh; opacity: 0.92; animation: cloud-move-2 55s linear infinite; }
+.cloud-3 { top: 34%; left: -60%; width: 90vw; height: 22vh; opacity: 0.88; animation: cloud-move-3 70s linear infinite; }
+
+@keyframes cloud-move-1 {
+  0% { transform: translateX(-40%) translateY(0) scale(1); }
+  50% { transform: translateX(10%) translateY(-6%) scale(1.03); }
+  100% { transform: translateX(120%) translateY(0) scale(1); }
+}
+@keyframes cloud-move-2 {
+  0% { transform: translateX(-60%) translateY(0) scale(1); }
+  50% { transform: translateX(-10%) translateY(-4%) scale(1.02); }
+  100% { transform: translateX(140%) translateY(0) scale(1); }
+}
+@keyframes cloud-move-3 {
+  0% { transform: translateX(-80%) translateY(0) scale(1); }
+  50% { transform: translateX(-20%) translateY(-8%) scale(1.04); }
+  100% { transform: translateX(160%) translateY(0) scale(1); }
+}
+
+/* Title + masking so clouds appear above title when overlapping */
+.hero-content { padding-top: 8vh; padding-bottom: 12vh; }
+.hero-title { color: white; text-shadow: 0 8px 30px rgba(2,6,23,0.6); position: relative; display: inline-block; z-index: 15; }
+.hero-title::after { content: attr(data-text); position: absolute; inset: 0; left: 0; top: 0; z-index: -1; color: white; }
+.hero-tagline { color: rgba(255,255,255,0.9); }
+
+/* Make clouds render above title where overlapping: we place clouds z-index above content but use mix-blend to ensure natural occlusion */
+.clouds-layer { z-index: 45; }
+.hero-content { z-index: 40; position: relative; }
+
+/* Ensure clouds visually sit above the title: we'll clip title under clouds using mix-blend and pointer-events none so clouds appear on top */
+.clouds-layer { mix-blend-mode: normal; pointer-events: none; }
+.cloud { mix-blend-mode: normal; pointer-events: none; }
+
+/* Slightly increase contrast where clouds overlap text using a pseudo overlay */
+.clouds-layer::after { content: ''; position: absolute; left:0; right:0; top:0; bottom:0; pointer-events:none; }
+
+/* Slight fade near horizon so sun appears to sit on beach */
+.hero-sky::after { content: '' ; position: absolute; left:0; right:0; bottom:0; height:22vh; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 50%, rgba(0,0,0,0.06) 100%); pointer-events:none; }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .hero-title { font-size: 3rem; }
+  .sun-wrap { width: 120px; height: 120px; }
+  .sun { width: 120px; height: 120px; }
+}
+
+@keyframes panel-in {
+  from { transform: scale(.98); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-panel-in {
+  animation: panel-in 180ms cubic-bezier(.2,.8,.2,1) forwards;
 }

@@ -8,6 +8,19 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        // Base Palette
+        tuna: '#32303f',
+        aquamarine: '#88f9b5',
+
+        // Gradient
+        calico: '#e0c8ab',
+        'mountain-meadow': '#1db990',
+        
+        // Hero Gradient (Landing Page)
+        rhino: '#2C3859',
+        dandelion: '#FDD158',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -15,6 +28,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };
 export default config;
